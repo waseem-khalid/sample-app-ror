@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
- 
+  has_many :microposts, dependent: :destroy
   attr_accessor :remember_token, :activation_token, :reset_token
   before_save   :downcase_email
   before_create :create_activation_digest
@@ -46,6 +46,10 @@ class User < ActiveRecord::Base
   # Activates an account.
   def activate
     update_columns(activated: FILL_IN, activated_at: FILL_IN)
+  end
+
+  def feed
+    microposts
   end
 
   # Sends activation email.
