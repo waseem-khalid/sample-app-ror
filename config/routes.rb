@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
     
+  get 'password_resets/new'
+
+  get 'password_resets/edit'
+
   get 'users/new'
 
   root 'my_page#home'
@@ -24,6 +28,13 @@ Rails.application.routes.draw do
 
   resources :users
 
+  match 'auth/:provider/callback', to: 'sessions#create', via: [:get, :post]
+  match 'auth/failure', to: redirect('/'), via: [:get, :post]
+  match 'signout', to: 'sessions#destroy', as: 'signout', via: [:get, :post]
+
+  resources :account_activations, only: [:edit]
+  resources :password_resets,     only: [:new, :create, :edit, :update]
+  
   # You can have the root of your site routed with "root"
  
 
